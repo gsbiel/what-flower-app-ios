@@ -21,7 +21,7 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
         imagePicker.delegate = self
         imagePicker.sourceType = .camera
-        imagePicker.allowsEditing = false
+        imagePicker.allowsEditing = true
     }
     
     
@@ -41,7 +41,7 @@ class ViewController: UIViewController {
             }
             
             if let firstResult = results.first {
-                self.navigationItem.title = "It is a \(firstResult.identifier)"
+                self.navigationItem.title = "It is a \(firstResult.identifier.capitalized)"
             }
             
         }
@@ -60,7 +60,7 @@ extension ViewController : UIImagePickerControllerDelegate {
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
-        if let imagePicked = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+        if let imagePicked = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             
             imageView.image = imagePicked
             
