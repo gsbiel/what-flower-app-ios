@@ -9,12 +9,17 @@
 import UIKit
 import CoreML
 import Vision
+import Alamofire
+import SwiftyJSON
 
 class ViewController: UIViewController {
     
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var flowerDescription: UILabel!
     
     private var imagePicker = UIImagePickerController()
+    
+    private let urlBase : String  = "https://en.wikipedia.org/w/api.php"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,7 +28,6 @@ class ViewController: UIViewController {
         imagePicker.sourceType = .camera
         imagePicker.allowsEditing = true
     }
-    
     
     @IBAction func cameraButtonPressed(_ sender: UIBarButtonItem) {
         present(imagePicker, animated: true, completion: nil)
@@ -41,7 +45,13 @@ class ViewController: UIViewController {
             }
             
             if let firstResult = results.first {
-                self.navigationItem.title = "It is a \(firstResult.identifier.capitalized)"
+                
+                let flowerName = firstResult.identifier.capitalized
+                
+                self.navigationItem.title = "It is a \(flowerName)"
+                
+                self.requestInfo(about : flowerName)
+                
             }
             
         }
@@ -54,6 +64,36 @@ class ViewController: UIViewController {
             print("Error while performing the request.\(error)")
         }
     }
+    
+    private func requestInfo(about flowerName : String){
+        
+        let parameters : [String:String] = [
+            "format" : "json",
+            "action" : "query",
+            "prop" : "extracts",
+            "exintro" : "",
+            "explaintext" : "",
+            "titles" : flowerName,
+            "indexpageids" : "",
+            "redirects" : "1"
+        ]
+        
+        Alamofire.request(self.urlBase, parameters: parameters).responseJSON { (response) in
+            if response.result.isSuccess {
+                
+                print(response.result)
+                
+                let flowerJSON : JSON = JSON(response.result.value!)
+                
+                let pageId = flowerJSON["query"]["pageids"][0].stringValue
+                
+                let flowerInfo = flowerJSON["query"]["pages"][pageId]["extract"].stringValue
+                
+                self.flowerDescription.text = flowerInfo
+            }
+        }
+    }
+    
 }
 
 extension ViewController : UIImagePickerControllerDelegate {

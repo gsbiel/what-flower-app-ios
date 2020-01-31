@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -50,7 +50,6 @@
 				0B4FF36E017F8294F4B56797 /* Pods-WhaFlowerIsIt.debug.xcconfig */,
 				8D791454407A3A6342129E6C /* Pods-WhaFlowerIsIt.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -75,6 +74,7 @@
 		C9CD54FB23E3A3790068A456 /* WhaFlowerIsIt */ = {
 			isa = PBXGroup;
 			children = (
+				C9F28A1523E3BFF20073384E /* Model */,
 				C9CD551023E3A44D0068A456 /* FlowerClassifier.mlmodel */,
 				C9CD54FC23E3A3790068A456 /* AppDelegate.swift */,
 				C9CD54FE23E3A3790068A456 /* SceneDelegate.swift */,
@@ -85,6 +85,13 @@
 				C9CD550A23E3A37B0068A456 /* Info.plist */,
 			);
 			path = WhaFlowerIsIt;
+			sourceTree = "<group>";
+		};
+		C9F28A1523E3BFF20073384E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		FA6F3005A3B57DEC82E8A3E3 /* Frameworks */ = {
