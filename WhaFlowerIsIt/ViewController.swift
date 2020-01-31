@@ -11,6 +11,7 @@ import CoreML
 import Vision
 import Alamofire
 import SwiftyJSON
+import SDWebImage
 
 class ViewController: UIViewController {
     
@@ -70,12 +71,13 @@ class ViewController: UIViewController {
         let parameters : [String:String] = [
             "format" : "json",
             "action" : "query",
-            "prop" : "extracts",
+            "prop" : "extracts|pageimages",
             "exintro" : "",
             "explaintext" : "",
             "titles" : flowerName,
             "indexpageids" : "",
-            "redirects" : "1"
+            "redirects" : "1",
+            "pithumbsize" : "500"
         ]
         
         Alamofire.request(self.urlBase, parameters: parameters).responseJSON { (response) in
@@ -88,6 +90,10 @@ class ViewController: UIViewController {
                 let pageId = flowerJSON["query"]["pageids"][0].stringValue
                 
                 let flowerInfo = flowerJSON["query"]["pages"][pageId]["extract"].stringValue
+                
+                let flowerImageUrl = flowerJSON["query"]["pages"][pageId]["thumbnail"]["source"].stringValue
+                
+                self.imageView.sd_setImage(with: URL(string: flowerImageUrl))
                 
                 self.flowerDescription.text = flowerInfo
             }
@@ -102,7 +108,8 @@ extension ViewController : UIImagePickerControllerDelegate {
         
         if let imagePicked = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             
-            imageView.image = imagePicked
+            // Na atual implementacao estamos colocando no imageView a imagem baixada da API
+            //imageView.image = imagePicked
             
             guard let ciImage = CIImage(image: imagePicked) else {
                 fatalError("Can not convert image to a CIImage data type.")
